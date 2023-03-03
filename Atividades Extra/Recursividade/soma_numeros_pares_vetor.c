@@ -1,27 +1,24 @@
 #include <stdio.h>
 
-int positivos(int v[], int n, int* soma) {
-    if(n == 1)
-    {
+void positivos(int v[], int n, int* soma) {
+    if(n == 1) {
         if(n % 2 == 0) 
-        {
             soma += v[n-1];
-            return v[n-1];
-        }
-        return 0;
+        return;
     }
 
     positivos(v, n-1, soma);
 
-    if(v[n-1] % 2 == 0) {*soma += v[n-1];}
-
-    return *soma;
+    if(v[n-1] % 2 == 0) 
+        *soma += v[n-1];
 }
 
 int soma_positivos(int v[], int n) {
     int soma = 0;
 
-    return positivos(v, n, &soma);
+    positivos(v, n, &soma);
+
+    return soma;
 }
 
 
