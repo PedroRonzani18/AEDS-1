@@ -1,7 +1,6 @@
 #include <stdio.h>
 
-int positivos(int v[], int n, int* soma)
-{
+int positivos(int v[], int n, int* soma) {
     if(n == 1)
     {
         if(n % 2 == 0) 
@@ -19,8 +18,7 @@ int positivos(int v[], int n, int* soma)
     return *soma;
 }
 
-int soma_positivos(int v[], int n)
-{
+int soma_positivos(int v[], int n) {
     int soma = 0;
 
     return positivos(v, n, &soma);
