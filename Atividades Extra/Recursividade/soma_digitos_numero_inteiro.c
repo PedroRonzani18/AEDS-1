@@ -19,7 +19,7 @@ void soma_digitos_util(int v[], int* soma, int n)
         return;
     }
 
-    soma_digitos_util(v, soma, n-1); // transita denro do vetor até primeira posiçaõ
+    soma_digitos_util(v, soma, n-1); // transita denro do vetor até primeira posição
 
     *soma += v[n-1];
 }
