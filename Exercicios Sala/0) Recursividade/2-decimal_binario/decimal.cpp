@@ -2,8 +2,9 @@
 
 void dec2bin(int n)
 {
-    if(n == 0) 
+    if(n == 0 or n == 1) 
     {
+        std::cout << n;
         return;
     }
     dec2bin(n/2);
@@ -18,12 +19,7 @@ int main()
 
     std::cout << "Resultado: ";
 
-    if(n == 0)
-    {
-        std::cout << 0;
-    }
-    else
-        dec2bin(n);
+    dec2bin(n);
 
     std::cout << std::endl;
 }

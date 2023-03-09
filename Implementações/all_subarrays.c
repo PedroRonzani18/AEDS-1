@@ -87,7 +87,7 @@ int max_subarray_sum_n1(int arr[], int n) {
         
         else
             soma_ant += arr[i]; // realiza nova soma
-        ans = max(soma_ant, ans); // compara qual soma é maior
+        ans = fmax(soma_ant, ans); // compara qual soma é maior
     }
 
     return ans;

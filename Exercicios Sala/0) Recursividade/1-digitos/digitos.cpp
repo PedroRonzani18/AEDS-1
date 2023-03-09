@@ -1,25 +1,20 @@
 #include <iostream>
 
-int digitos(int n, int cont)
+int digitos(int n)
 {
-    if(n == 0) 
-    {
-        return 0;
-    }
+    if(n == 0) return 1;
 
-    n /= 10;
-    cont++;
-
-    return digitos(n, cont) + 1;
+    if(n >= 10)
+        return digitos(n/10) + 1;
+    else
+        return digitos(n/10);
 }
 
 int main()
 {
-    int n;
-    std::cout << "Digite um numero inteiro: "; std::cin >> n;
+    int n; std::cout << "Digite um numero inteiro: "; std::cin >> n;
 
-    int cont = 0;
-    int result = digitos(n, cont);
+    int result = digitos(n);
 
     std::cout << "Resultado: " << result << std::endl;
 }

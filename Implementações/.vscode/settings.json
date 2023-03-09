@@ -1,5 +1,8 @@
 {
-    "files.associations": {
-        "iostream": "cpp"
-    }
+  "files.associations": {
+    "iostream": "cpp",
+    "ostream": "cpp",
+    "iosfwd": "cpp",
+    "stdlib.h": "c"
+  }
 }
