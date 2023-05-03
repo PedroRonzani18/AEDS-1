@@ -6,7 +6,6 @@ using namespace std;
 
 #define print_v(a)     for(auto x : a) cout << x << " "; cout << endl
 #define print2(a,x,y)  for(int i = x; i < y; i++) cout<< a[i]<< " "; cout << endl
-
 #define rf(i,e,s) 	   for(int i=e-1;i>=s;i--)
 
 
@@ -52,11 +51,13 @@ string factorial(const int& n) {
 
     for(int c=2; c<=n; c++)
     {
+        cout << "MULTIPLO DO MOMENTO: " << c << endl;
         remove_zeros_a_esquerda(fact);
 
-        deque<int> multiplicador = multiplicador_em_valores(c); // TODO:
-        deque<int> soma_das_microsomas; soma_das_microsomas.push_back(0);
+        cout << "Fact: "; print_v(fact);
 
+        deque<int> multiplicador = multiplicador_em_valores(c); 
+        deque<int> soma_das_microsomas; soma_das_microsomas.push_back(0);
 
         for(size_t m=0; m<multiplicador.size(); m++) // percorre por cada digito do multiplicador
         {
@@ -123,10 +124,10 @@ string factorial(const int& n) {
     return retorno;
 }
 
-int main() {
-    cout << "Digite um numero inteiro: "; int n; cin >> n;
+    int main() {
+        cout << "Digite um numero inteiro: "; int n; cin >> n;
 
-    cout << "Respota: \n" << factorial(n) << endl;
+        cout << "Respota: \n" << factorial(n) << endl;
 
-    return 0;
-}
+        return 0;
+    }
