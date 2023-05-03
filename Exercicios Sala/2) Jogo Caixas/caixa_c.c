@@ -6,11 +6,11 @@
 int* split(char* str, int n) {
 
     int* retorno = (int*)malloc(n * sizeof(int));    
-    char * token = strtok(str, " ");
+    char * sub = strtok(str, " ");
 
-    for(int i = 0; token != NULL; i++) {
-        retorno[i] = atoi(token);
-        token = strtok(NULL, " ");
+    for(int i = 0; sub != NULL; i++) {
+        retorno[i] = atoi(sub);
+        sub = strtok(NULL, " ");
     }
 
     return retorno;
@@ -19,23 +19,16 @@ int* split(char* str, int n) {
 
 int main() {
 
-    printf("Digite o nome do arquivo de entrada: ");
-    char* path = (char*)malloc(200 * sizeof(char*));
-    scanf("%s",path);
+    printf("Digite o nome do arquivo de entrada: "); 
+    char* path = (char*)malloc(200 * sizeof(char*)); scanf("%s",path);
 
     FILE* f = fopen(path, "r");
-
-    if(!f) { 
-        printf("Erro de abertura de %s\n",path);
-        return 0;
-    }
 
     size_t buffsize = 200;
     char* buffer;
     int fileira=1, caixa=1, maior, numero_linhas;
 
     getline(&buffer, &buffsize, f); numero_linhas = atoi(buffer);
-
     getline(&buffer, &buffsize, f); maior = atoi(buffer);
 
     int soma_anterior = maior;
@@ -56,9 +49,9 @@ int main() {
             }
         }
 
-        for(int j=0; j<i; j++) {
+        for(int j=0; j<i; j++) 
             soma_anterior += numeros_atuais[j];
-        }
+        
 
         free(numeros_atuais);
     }
@@ -67,6 +60,5 @@ int main() {
 
     printf("Resposta: fileira %d, caixa %d.\n",fileira,caixa);
 
-    free(buffer);
     free(path);
 }
