@@ -1,0 +1,28 @@
+
+void Imprime(TipoLista Lista)
+{
+    TipoCelula *Aux;
+    Aux = Lista.Primeiro->Prox;
+    while (Aux != NULL)
+    {
+        printf("%d ", Aux->Item.Tipo);
+        Aux = Aux->Prox;
+    }
+    printf("\n");
+
+    Aux = Lista.Primeiro->Prox;
+    while (Aux != NULL)
+    {
+        printf("%d ", Aux->Item.NumElementos);
+        Aux = Aux->Prox;
+    }
+    printf("\n");
+
+    Aux = Lista.Primeiro->Prox;
+    while (Aux != NULL)
+    {
+        printf("%d ", Aux->Item.PontoMedio);
+        Aux = Aux->Prox;
+    }
+    printf("\n");
+}
