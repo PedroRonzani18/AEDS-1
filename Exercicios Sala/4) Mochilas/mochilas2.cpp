@@ -8,14 +8,13 @@ Data: 02/05/2023
 
 ****************/
 
-
 #include <vector>
 #include <algorithm>
 #include <utility>
 #include <cmath>
 #include <iostream>
 #include <fstream>
-#include <sstream>
+#include <sstream> 
 
 using namespace std;
 
