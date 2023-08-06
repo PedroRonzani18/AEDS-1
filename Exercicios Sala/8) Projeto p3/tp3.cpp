@@ -1,10 +1,10 @@
 /****************
 
-LAED1 - Projeto (Parte II) - Estimativa do formato da pista
+LAED1 - Projeto (Parte III) - Detecção de impedimentos na pista
 
 Alunos: Pedro Augusto de Portilho Ronzani, Ulisses Andrade Carvallho
 
-Data: 02/06/2023
+Data: 16/06/2023
 
 ****************/
 
@@ -141,16 +141,6 @@ void cria_vetores_modelo()
     vetor_modelo[4] = 1;    
 }
 
-// função que simula lista[i]
-TipoItem item_index(const TipoLista& lista, const int& index) {
-    TipoCelula *Aux = lista.Primeiro->Prox;
-    
-    for (int i=0; i<index; i++) 
-        Aux = Aux->Prox;
-
-    return Aux->Item;
-}
-
 // verrifica qual intervalo caracteriza aquele valor, e adiciona um item à matriz de intervalos
 void adiciona_item(const TipoItem& auxItem, const int& cont, const int& index, const int& linha) {
 
@@ -198,69 +188,59 @@ void contagem_valores()
     }
 }
 
-// verifica se o padrao 1 3 2 3 1 se encontra em algum lugar da matriz de intervalos
-int verifica_conter_padrao(const int& i, int& index_central) {
+// verifica se existe algum impedimento 
+void verifica_impedimento() {
 
-    int k=0;
-    for(TipoCelula* auxI = matriz_intervalos[i].Primeiro->Prox; auxI != NULL; auxI = auxI->Prox, k++) {
-        
-        if(auxI->Item.Tipo == vetor_modelo[0]) {
+    // iterar ate encontrar 2 3 1
+    for(int i=0; i<linhas; i++) {
 
-            bool padrao_encontrado = true;
-            TipoCelula* iterador = auxI;
+        // Primeira parte: encontar momento que entra no vermelho
+        TipoCelula* iterador_geral = matriz_intervalos[i].Primeiro->Prox;
+        for(TipoCelula* auxI = iterador_geral; auxI != NULL; auxI = auxI->Prox) {
+            
+            if(auxI->Item.Tipo == vetor_modelo[2]) {
+                iterador_geral = auxI;
+                break;
+            }
+        }
 
-            for(int j=0; j<5; j++, iterador = iterador->Prox) {
-                if(iterador == NULL) {
-                    index_central = -1;
-                    return 0;
+        // Segunda parte: encontrar ... seguido de 2 3 1 
+        int contador_supostos_itens_azuis = 0;
+
+        for(TipoCelula* auxI = iterador_geral; auxI != NULL; auxI = auxI->Prox, contador_supostos_itens_azuis++) {
+
+            if(auxI->Item.Tipo == vetor_modelo[2]) {
+                
+                bool segunda_parte_encontrada = true;
+                TipoCelula* iterador = auxI;
+
+                for(int j=2; j<5; j++, iterador = iterador->Prox) {
+                
+                    if(iterador == NULL) {
+                        segunda_parte_encontrada = false;
+                        break;
+                    }
+
+                    if(vetor_modelo[j] != iterador->Item.Tipo) {
+                        segunda_parte_encontrada = false;
+                        break;
+                    }
                 }
 
-                if(vetor_modelo[j] != iterador->Item.Tipo) {
-                    padrao_encontrado = false;
+                if(segunda_parte_encontrada) { // se encontrou a primeira parte, pode ir pra segunda a partir desse ponto
                     break;
                 }
             }
-            if(padrao_encontrado) {
-                index_central = item_index(matriz_intervalos[i], k+2).PontoMedio;
-                return 1;
-            }
+        }
+
+        if(contador_supostos_itens_azuis > 0) 
+        {
+            cout << "Resultado: Pista com impedimento.\n";
+            return;
         }
     }
 
-    index_central = -1;
-    return 0;
-}
-
-// verifica em qual tipo de pista essa se encaixa
-void verifica_tipagem_pista() {
-
-    float quantidade_linhas_padrao = 0;
-
-    TipoLista lista_indices; FLVazia(&lista_indices);
-
-    for(int i=0; i<linhas; i++) {
-        TipoItem index_central;
-        quantidade_linhas_padrao += verifica_conter_padrao(i, index_central.Chave);
-        
-        if(index_central.Chave != -1)
-            Insere(index_central, &lista_indices);
-    }
-
-    if(quantidade_linhas_padrao / linhas < 0.7 - 1e-6) { // erro de precisão float
-        cout << "Resultado: Formato da pista nao estimado.\n";
-        return;
-    }
-
-    TipoCelula *Aux = lista_indices.Primeiro->Prox;
-
-    while (Aux->Prox != NULL) Aux = Aux->Prox;
-
-    int distancia = Aux->Item.Chave - lista_indices.Primeiro->Prox->Item.Chave;
-    float limite = 0.1 * colunas;
-
-    if(distancia < -limite) cout << "Resultado: Curva a direita.\n";
-    else if (distancia > limite) cout << "Resultado: Curva a esquerda.\n";
-    else  cout << "Resultado: Pista em linha reta.\n";
+    cout << "Resultado: Pista sem impedimento.\n";
 }
 
 int main()
@@ -268,5 +248,5 @@ int main()
     leitura_arquivo();
     cria_vetores_modelo();
     contagem_valores();
-    verifica_tipagem_pista();
+    verifica_impedimento();
 }

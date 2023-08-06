@@ -1,6 +1,6 @@
 /****************
 
-LAED1 - Projeto (Parte II) - Estimativa do formato da pista
+LAED1 - Projeto (Parte III) - Detecção de impedimentos na pista
 
 Alunos: Pedro Augusto de Portilho Ronzani, Ulisses Andrade Carvallho
 
@@ -141,16 +141,6 @@ void cria_vetores_modelo()
     vetor_modelo[4] = 1;    
 }
 
-// função que simula lista[i]
-TipoItem item_index(const TipoLista& lista, const int& index) {
-    TipoCelula *Aux = lista.Primeiro->Prox;
-    
-    for (int i=0; i<index; i++) 
-        Aux = Aux->Prox;
-
-    return Aux->Item;
-}
-
 // verrifica qual intervalo caracteriza aquele valor, e adiciona um item à matriz de intervalos
 void adiciona_item(const TipoItem& auxItem, const int& cont, const int& index, const int& linha) {
 
@@ -199,7 +189,7 @@ void contagem_valores()
 }
 
 // verifica se o padrao 1 3 2 3 1 se encontra em algum lugar da matriz de intervalos
-int verifica_conter_padrao(const int& i, int& index_central) {
+int verifica_conter_padrao(const int& i) {
 
     int k=0;
     for(TipoCelula* auxI = matriz_intervalos[i].Primeiro->Prox; auxI != NULL; auxI = auxI->Prox, k++) {
@@ -211,7 +201,6 @@ int verifica_conter_padrao(const int& i, int& index_central) {
 
             for(int j=0; j<5; j++, iterador = iterador->Prox) {
                 if(iterador == NULL) {
-                    index_central = -1;
                     return 0;
                 }
 
@@ -221,46 +210,21 @@ int verifica_conter_padrao(const int& i, int& index_central) {
                 }
             }
             if(padrao_encontrado) {
-                index_central = item_index(matriz_intervalos[i], k+2).PontoMedio;
                 return 1;
             }
         }
     }
-
-    index_central = -1;
     return 0;
 }
 
-// verifica em qual tipo de pista essa se encaixa
-void verifica_tipagem_pista() {
-
-    float quantidade_linhas_padrao = 0;
-
-    TipoLista lista_indices; FLVazia(&lista_indices);
-
+void analisa_impedimentos() {
     for(int i=0; i<linhas; i++) {
-        TipoItem index_central;
-        quantidade_linhas_padrao += verifica_conter_padrao(i, index_central.Chave);
-        
-        if(index_central.Chave != -1)
-            Insere(index_central, &lista_indices);
+        if(verifica_conter_padrao(i) == 0) { // se n encontra padrao, verifica se é obstaculo ou curva
+            cout << "Resultado: Pista com impedimento.\n";
+            return;
+        }
     }
-
-    if(quantidade_linhas_padrao / linhas < 0.7 - 1e-6) { // erro de precisão float
-        cout << "Resultado: Formato da pista nao estimado.\n";
-        return;
-    }
-
-    TipoCelula *Aux = lista_indices.Primeiro->Prox;
-
-    while (Aux->Prox != NULL) Aux = Aux->Prox;
-
-    int distancia = Aux->Item.Chave - lista_indices.Primeiro->Prox->Item.Chave;
-    float limite = 0.1 * colunas;
-
-    if(distancia < -limite) cout << "Resultado: Curva a direita.\n";
-    else if (distancia > limite) cout << "Resultado: Curva a esquerda.\n";
-    else  cout << "Resultado: Pista em linha reta.\n";
+    cout << "Resultado: Pista sem impedimento.\n";
 }
 
 int main()
@@ -268,5 +232,5 @@ int main()
     leitura_arquivo();
     cria_vetores_modelo();
     contagem_valores();
-    verifica_tipagem_pista();
+    analisa_impedimentos();
 }
