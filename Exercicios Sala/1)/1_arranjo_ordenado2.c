@@ -28,8 +28,8 @@ int main() {
         }
     }
 
-    // printf("Resultado: existe(m) %d numero(s) na sequencia final\n",n);
-    // printf("Sequencia final: ");
+    printf("Resultado: existe(m) %d numero(s) na sequencia final\n",n);
+    printf("Sequencia final: ");
 
     for(int i=0; i<n-1; i++) {
         printf("%d ",v[i]);
